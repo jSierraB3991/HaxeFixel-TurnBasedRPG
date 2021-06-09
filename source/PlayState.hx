@@ -24,6 +24,7 @@ class PlayState extends FlxState
 		map.loadEntities(placeEntities, "entities");
 		add(walls);
 		add(player);
+		FlxG.camera.follow(player, TOPDOWN, 1);
 		super.create();
 	}
 

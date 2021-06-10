@@ -61,6 +61,8 @@ class PlayState extends FlxState
 	{
 		FlxG.overlap(player, coins, playerTouchCoin);
 		FlxG.collide(player, walls);
+		FlxG.collide(enemies, walls);
+		enemies.forEachAlive(checkEnemyVision);
 		super.update(elapsed);
 	}
 
@@ -69,6 +71,19 @@ class PlayState extends FlxState
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
 			coin.kill();
+		}
+	}
+
+	function checkEnemyVision(enemy:Enemy)
+	{
+		if (walls.ray(enemy.getMidpoint(), player.getMidpoint()))
+		{
+			enemy.seesPlayer = true;
+			enemy.playerPosition = player.getMidpoint();
+		}
+		else
+		{
+			enemy.seesPlayer = false;
 		}
 	}
 }

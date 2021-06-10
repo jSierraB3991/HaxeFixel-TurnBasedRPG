@@ -6,11 +6,13 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
 
+using flixel.util.FlxSpriteUtil;
+
 class Enemy extends FlxSprite
 {
 	static inline var SPEED:Float = 140;
 
-	var type:EnemyType;
+	public var type:EnemyType;
 
 	var brain:FSM;
 	var idleTimer:Float;
@@ -100,6 +102,8 @@ class Enemy extends FlxSprite
 		{
 			idleTimer -= elapse;
 		}
+		if (this.isFlickering())
+			return;
 	}
 
 	function chase(elapse:Float)
@@ -111,6 +115,16 @@ class Enemy extends FlxSprite
 		else
 		{
 			FlxVelocity.moveTowardsPoint(this, playerPosition, Std.int(SPEED));
+		}
+	}
+
+	public function changeType(type:EnemyType)
+	{
+		if (this.type != type)
+		{
+			this.type = type;
+			var graphic = if (type == BOSS) AssetPaths.boss__png else AssetPaths.enemy__png;
+			loadGraphic(graphic, true, 16, 16);
 		}
 	}
 }
